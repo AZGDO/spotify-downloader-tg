@@ -1,0 +1,15 @@
+version: "3"
+services:
+  bot:
+    build: .
+    environment:
+      BOT_TOKEN: "YOUR_TOKEN_HERE"
+      SPOTIPY_CLIENT_ID: "YOUR_SPOTIFY_CLIENT_ID"
+      SPOTIPY_CLIENT_SECRET: "YOUR_SPOTIFY_CLIENT_SECRET"
+      REDIS_URL: "redis://redis:6379/0"
+    volumes:
+      - downloads:/app/downloads
+  redis:
+    image: redis:alpine
+volumes:
+  downloads:
