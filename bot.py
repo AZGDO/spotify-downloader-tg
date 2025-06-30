@@ -34,9 +34,9 @@ from savify.types import Format, Quality
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-TOKEN = os.environ["BOT_TOKEN"]
-CLIENT_ID = os.environ["SPOTIPY_CLIENT_ID"]
-CLIENT_SECRET = os.environ["SPOTIPY_CLIENT_SECRET"]
+TOKEN = "7960705872:AAE52ca1zbKizNRE6dCNdUPe_yMp89Nhxwg"
+CLIENT_ID = "4d2f985998b1462b97c400b889e1919c"
+CLIENT_SECRET = "36a1ccd92f3e48f18e88baa0b8e5fab7"
 REDIS_URL = os.getenv("REDIS_URL")
 
 DOWNLOAD_DIR = Path("/app/downloads")
