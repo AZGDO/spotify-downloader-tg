@@ -5,10 +5,13 @@ Telegram bot to search and download Spotify music.
 ## Quick start
 
 ```bash
-docker compose up -d
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+BOT_TOKEN=... SPOTIPY_CLIENT_ID=... SPOTIPY_CLIENT_SECRET=... python bot.py
 ```
 
-Set the following environment variables in `docker-compose.yml`:
+### Environment variables
 
 | Variable | Description |
 | --- | --- |
