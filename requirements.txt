@@ -1,0 +1,7 @@
+aiogram==2.13
+savify
+spotipy
+aiohttp
+aiocache
+aiofiles
+dataclasses; python_version<'3.7'
