@@ -1,7 +1,7 @@
 # Spotify DL Bot
 
 Telegram bot to search and download Spotify music.
-Requires **Python 3.6+** and [aiogram](https://github.com/aiogram/aiogram).
+Requires **Python 3.6** and [aiogram](https://github.com/aiogram/aiogram) 2.9.
 
 ## Quick start
 
