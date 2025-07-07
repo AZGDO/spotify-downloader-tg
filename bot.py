@@ -208,7 +208,7 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text("Send me a song name or Spotify link")
 
 
-async def worker(app: Application[ContextTypes.DEFAULT_TYPE]) -> None:
+async def worker(app: Application[Any, Any, Any, Any, Any, Any]) -> None:
     queue: asyncio.Queue[DownloadJob] = app.bot_data["queue"]
     sp: Spotify = app.bot_data["sp"]
     while True:
@@ -221,7 +221,7 @@ async def worker(app: Application[ContextTypes.DEFAULT_TYPE]) -> None:
             queue.task_done()
 
 
-async def process_download(app: Application[ContextTypes.DEFAULT_TYPE], sp: Spotify, job: DownloadJob) -> None:
+async def process_download(app: Application[Any, Any, Any, Any, Any, Any], sp: Spotify, job: DownloadJob) -> None:
     cache_key = f"dl:{job.spotify_id}"
     cached_path = await download_cache.get(cache_key)
     if cached_path and Path(cached_path).is_file():
@@ -281,8 +281,7 @@ async def main() -> None:
     runner.app.router.add_get("/healthz", health)
     await site.start()
 
-    await application.run_polling()
-    return
+    application.run_polling()
 
 
 if __name__ == "__main__":
