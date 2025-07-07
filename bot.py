@@ -31,6 +31,7 @@ from telegram.ext import (
 )
 from savify import Savify
 from savify.types import Format, Quality
+from savify.utils import PathHolder
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
@@ -62,7 +63,7 @@ async def run_web() -> None:
     await server.serve()
 
 
-@app.get("/healthz")
+@app.get("/healthz")  # type: ignore[misc]
 async def healthz() -> Dict[str, str]:
     return {"status": "ok"}
 
@@ -194,11 +195,14 @@ async def worker() -> None:
             continue
         url = f"https://open.spotify.com/track/{track_id}"
         savify = Savify(
+            api_credentials=SpotifyClientCredentials(
+                client_id=SPOTIFY_ID,
+                client_secret=SPOTIFY_SECRET,
+            ),
             quality=Quality.BEST,
             download_format=Format.MP3,
-            path=DOWNLOAD_DIR,
             group="%artist%/%album%",
-            spotify_credentials=(SPOTIFY_ID, SPOTIFY_SECRET),
+            path_holder=PathHolder(downloads_path=str(DOWNLOAD_DIR)),
         )
         try:
             await asyncio.to_thread(savify.download, url)
