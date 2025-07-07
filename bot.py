@@ -20,6 +20,7 @@ from telegram import (
     Message,
     Update,
 )
+from telegram.constants import ParseMode
 from telegram.ext import (
     AIORateLimiter,
     Application,
@@ -119,6 +120,7 @@ async def search_spotify(query: str) -> List[Dict[str, Any]]:
                 "title": item["name"],
                 "artists": ", ".join(a["name"] for a in item["artists"]),
                 "url": item["external_urls"]["spotify"],
+                "thumb": (item["album"]["images"][0]["url"] if item["album"].get("images") else None),
             }
         )
     return results
@@ -169,17 +171,33 @@ async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE
     articles = []
     for item in results:
         token = encode_id(item["id"])
+        text = f"{item['title']} – {item['artists']}"
+        if item.get("thumb"):
+            content = InputTextMessageContent(
+                f'<a href="{item["thumb"]}">&#8205;</a>{text}',
+                parse_mode=ParseMode.HTML,
+            )
+        else:
+            content = InputTextMessageContent(text)
+
         articles.append(
             InlineQueryResultArticle(
                 id=item["id"],
-                title=f"{item['title']} – {item['artists']}",
-                input_message_content=InputTextMessageContent("Downloading..."),
+                title=item["title"],
+                description=item["artists"],
+                thumbnail_url=item.get("thumb"),
+                input_message_content=content,
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Download \U0001F53D", url=f"https://t.me/{context.bot.username}?start={token}")]]
+                    [[
+                        InlineKeyboardButton(
+                            "Download \U0001F53D",
+                            url=f"https://t.me/{context.bot.username}?start={token}",
+                        )
+                    ]]
                 ),
-                description="Send to download",
             )
         )
+
     await inline_query.answer(articles)
 
 
