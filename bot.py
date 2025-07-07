@@ -40,10 +40,12 @@ SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET")
 
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN not set")
+if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
+    raise RuntimeError("Spotify credentials not set")
 TOKEN: str = BOT_TOKEN
 
-os.environ.setdefault("SPOTIPY_CLIENT_ID", SPOTIFY_CLIENT_ID or "")
-os.environ.setdefault("SPOTIPY_CLIENT_SECRET", SPOTIFY_CLIENT_SECRET or "")
+os.environ.setdefault("SPOTIPY_CLIENT_ID", SPOTIFY_CLIENT_ID)
+os.environ.setdefault("SPOTIPY_CLIENT_SECRET", SPOTIFY_CLIENT_SECRET)
 
 DOWNLOAD_DIR = Path("/app/downloads")
 DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -206,7 +208,7 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text("Send me a song name or Spotify link")
 
 
-async def worker(app: Application[ContextTypes.DEFAULT_TYPE]) -> None:  # type: ignore[type-arg]
+async def worker(app: Application[ContextTypes.DEFAULT_TYPE]) -> None:
     queue: asyncio.Queue[DownloadJob] = app.bot_data["queue"]
     sp: Spotify = app.bot_data["sp"]
     while True:
@@ -219,7 +221,7 @@ async def worker(app: Application[ContextTypes.DEFAULT_TYPE]) -> None:  # type: 
             queue.task_done()
 
 
-async def process_download(app: Application[ContextTypes.DEFAULT_TYPE], sp: Spotify, job: DownloadJob) -> None:  # type: ignore[type-arg]
+async def process_download(app: Application[ContextTypes.DEFAULT_TYPE], sp: Spotify, job: DownloadJob) -> None:
     cache_key = f"dl:{job.spotify_id}"
     cached_path = await download_cache.get(cache_key)
     if cached_path and Path(cached_path).is_file():
@@ -279,7 +281,7 @@ async def main() -> None:
     runner.app.router.add_get("/healthz", health)
     await site.start()
 
-    await application.run_polling()  # type: ignore[func-returns-value]
+    await application.run_polling()
     return
 
 

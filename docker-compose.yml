@@ -2,10 +2,7 @@ version: '3'
 services:
   bot:
     build: .
-    environment:
-      - BOT_TOKEN=${BOT_TOKEN}
-      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
-      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+    env_file: .env
     volumes:
       - ./downloads:/app/downloads
     restart: unless-stopped
