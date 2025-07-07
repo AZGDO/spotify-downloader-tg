@@ -306,21 +306,21 @@ MESSAGES: Dict[str, Dict[str, str]] = {
         "bn": "দান করুন",
     },
     "donation_info": {
-        "en": "💗 Thanks for supporting!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonaters:\n{donaters}\n\nNickname can be sent in comment for transfer.",
-        "es": "💗 ¡Gracias por apoyar!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonadores:\n{donaters}\n\nEl apodo puede enviarse en el comentario de la transferencia.",
-        "de": "💗 Vielen Dank für die Unterstützung!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nSpender:\n{donaters}\n\nNickname kann im Überweisungs-Kommentar angegeben werden.",
-        "fr": "💗 Merci pour votre soutien !\n\nСбер : 2202 2068 1567 7914\nPayPal : azgd0@outlook.com\n\nDonateurs :\n{donaters}\n\nLe pseudo peut être envoyé dans le commentaire du transfert.",
-        "it": "💗 Grazie per il supporto!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonatori:\n{donaters}\n\nIl nickname può essere inviato nel commento al trasferimento.",
-        "pt": "💗 Obrigado pelo apoio!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDoadores:\n{donaters}\n\nO apelido pode ser enviado no comentário da transferência.",
-        "ru": "💗 Спасибо за поддержку!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nСпонсоры:\n{donaters}\n\nНикнейм можно указать в комментарии к переводу.",
-        "uk": "💗 Дякуємо за підтримку!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nДонатори:\n{donaters}\n\nНікнейм можна надіслати в коментарі до переказу.",
-        "zh": "💗 感谢您的支持！\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n捐赠者：\n{donaters}\n\n昵称可以在转账备注中填写。",
-        "ja": "💗 ご支援ありがとうございます！\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n寄付者:\n{donaters}\n\nニックネームは振込のコメントで送れます。",
-        "ko": "💗 후원해 주셔서 감사합니다!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n기부자:\n{donaters}\n\n닉네임은 송금 메모로 보낼 수 있습니다.",
-        "ar": "💗 شكرًا لدعمك!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nالمتبرعون:\n{donaters}\n\nيمكن إرسال الاسم المستعار في تعليق التحويل.",
-        "tr": "💗 Destek olduğunuz için teşekkürler!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nBağışçılar:\n{donaters}\n\nTakma ad transfer açıklamasında belirtilebilir.",
-        "hi": "💗 सहयोग के लिए धन्यवाद!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nदानदाता:\n{donaters}\n\nस्थानांतरण की टिप्पणी में उपनाम भेजा जा सकता है.",
-        "bn": "💗 সমর্থনের জন্য ধন্যবাদ!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nদানকারীরা:\n{donaters}\n\nট্রান্সফারের মন্তব্যে নিকনেম পাঠানো যেতে পারে।",
+        "en": "Thanks for supporting!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonaters:\n{donaters}\n\nNickname can be sent in comment for transfer.",
+        "es": "¡Gracias por apoyar!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonadores:\n{donaters}\n\nEl apodo puede enviarse en el comentario de la transferencia.",
+        "de": "Vielen Dank für die Unterstützung!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nSpender:\n{donaters}\n\nNickname kann im Überweisungs-Kommentar angegeben werden.",
+        "fr": "Merci pour votre soutien !\n\nСбер : 2202 2068 1567 7914\nPayPal : azgd0@outlook.com\n\nDonateurs :\n{donaters}\n\nLe pseudo peut être envoyé dans le commentaire du transfert.",
+        "it": "Grazie per il supporto!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonatori:\n{donaters}\n\nIl nickname può essere inviato nel commento al trasferimento.",
+        "pt": "Obrigado pelo apoio!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDoadores:\n{donaters}\n\nO apelido pode ser enviado no comentário da transferência.",
+        "ru": "Спасибо за поддержку!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nСпонсоры:\n{donaters}\n\nНикнейм можно указать в комментарии к переводу.",
+        "uk": "Дякуємо за підтримку!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nДонатори:\n{donaters}\n\nНікнейм можна надіслати в коментарі до переказу.",
+        "zh": "感谢您的支持！\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n捐赠者：\n{donaters}\n\n昵称可以在转账备注中填写。",
+        "ja": "ご支援ありがとうございます！\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n寄付者:\n{donaters}\n\nニックネームは振込のコメントで送れます。",
+        "ko": "후원해 주셔서 감사합니다!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n기부자:\n{donaters}\n\n닉네임은 송금 메모로 보낼 수 있습니다.",
+        "ar": "شكرًا لدعمك!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nالمتبرعون:\n{donaters}\n\nيمكن إرسال الاسم المستعار في تعليق التحويل.",
+        "tr": "Destek olduğunuz için teşekkürler!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nBağışçılar:\n{donaters}\n\nTakma ad transfer açıklamasında belirtilebilir.",
+        "hi": "सहयोग के लिए धन्यवाद!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nदानदाता:\n{donaters}\n\nस्थानांतरण की टिप्पणी में उपनाम भेजा जा सकता है.",
+        "bn": "সমর্থনের জন্য ধন্যবাদ!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nদানকারীরা:\n{donaters}\n\nট্রান্সফারের মন্তব্যে নিকনেম পাঠানো যেতে পারে।",
     },
     "none": {
         "en": "None",
@@ -435,11 +435,13 @@ async def send_clean_message(
     **kwargs: Any,
 ) -> Message:
     last_id = context.chat_data.get("last_bot_message")
-    if last_id:
-        try:
-            await context.bot.delete_message(chat_id, last_id)
-        except Exception:
-            pass
+    extra_id = context.chat_data.pop("extra_bot_message", None)
+    for msg_id in (last_id, extra_id):
+        if msg_id:
+            try:
+                await context.bot.delete_message(chat_id, msg_id)
+            except Exception:
+                pass
     msg = await context.bot.send_message(chat_id, text, **kwargs)
     context.chat_data["last_bot_message"] = msg.message_id
     return msg
@@ -501,18 +503,19 @@ async def donate_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         chat_id = message.chat_id
     if chat_id is None:
         return
+    user_id = update.effective_user.id if update.effective_user else 0
+    heart_msg = await context.bot.send_message(chat_id, "💗")
     donaters = get_donaters()
-    text = tr("donation_info", update.effective_user.id if update.effective_user else 0).format(
-        donaters="\n".join(donaters) if donaters else tr("none", update.effective_user.id if update.effective_user else 0)
+    text = tr("donation_info", user_id).format(
+        donaters="\n".join(donaters) if donaters else tr("none", user_id)
     )
     await send_clean_message(
         chat_id,
         context,
         text,
-        reply_markup=menu_button_markup(
-            update.effective_user.id if update.effective_user else 0
-        ),
+        reply_markup=menu_button_markup(user_id),
     )
+    context.chat_data["extra_bot_message"] = heart_msg.message_id
 
 
 async def menu_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
