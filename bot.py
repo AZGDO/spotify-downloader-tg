@@ -15,6 +15,7 @@ from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     InlineQueryResultArticle,
+    InlineQueryResultPhoto,
     InputTextMessageContent,
     InputFile,
     Message,
@@ -171,17 +172,39 @@ async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE
     for item in results:
         token = encode_id(item["id"])
         text = f"{item['title']} – {item['artists']}"
-        articles.append(
-            InlineQueryResultArticle(
-                id=item["id"],
-                title=text,
-                input_message_content=InputTextMessageContent(text),
-                reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Download \U0001F53D", url=f"https://t.me/{context.bot.username}?start={token}")]]
-                ),
-                thumbnail_url=item.get("thumb"),
+        if item.get("thumb"):
+            articles.append(
+                InlineQueryResultPhoto(
+                    id=item["id"],
+                    photo_url=item["thumb"],
+                    thumbnail_url=item["thumb"],
+                    caption=text,
+                    reply_markup=InlineKeyboardMarkup(
+                        [[
+                            InlineKeyboardButton(
+                                "Download \U0001F53D",
+                                url=f"https://t.me/{context.bot.username}?start={token}",
+                            )
+                        ]]
+                    ),
+                )
             )
-        )
+        else:
+            articles.append(
+                InlineQueryResultArticle(
+                    id=item["id"],
+                    title=text,
+                    input_message_content=InputTextMessageContent(text),
+                    reply_markup=InlineKeyboardMarkup(
+                        [[
+                            InlineKeyboardButton(
+                                "Download \U0001F53D",
+                                url=f"https://t.me/{context.bot.username}?start={token}",
+                            )
+                        ]]
+                    ),
+                )
+            )
     await inline_query.answer(articles)
 
 
