@@ -200,6 +200,7 @@ async def worker() -> None:
             download_format=Format.MP3,
             group="%artist%/%album%",
             path_holder=PathHolder(downloads_path=str(DOWNLOAD_DIR)),
+            logger=logger,
         )
         try:
             await asyncio.to_thread(savify.download, url)
