@@ -185,7 +185,7 @@ async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE
                 id=item["id"],
                 title=item["title"],
                 description=item["artists"],
-                thumb_url=item.get("thumb"),
+                thumbnail_url=item.get("thumb"),
                 input_message_content=content,
                 reply_markup=InlineKeyboardMarkup(
                     [[
