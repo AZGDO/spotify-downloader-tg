@@ -27,7 +27,6 @@ from telegram.ext import (
     CommandHandler,
     ContextTypes,
     InlineQueryHandler,
-    ChosenInlineResultHandler,
     MessageHandler,
     filters,
 )
@@ -170,24 +169,20 @@ async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     articles = []
     for item in results:
+        token = encode_id(item["id"])
+        text = f"{item['title']} – {item['artists']}"
         articles.append(
             InlineQueryResultArticle(
                 id=item["id"],
-                title=f"{item['title']} – {item['artists']}",
-                input_message_content=InputTextMessageContent("Downloading..."),
-                description="Sending track...",
+                title=text,
+                input_message_content=InputTextMessageContent(text),
+                reply_markup=InlineKeyboardMarkup(
+                    [[InlineKeyboardButton("Download \U0001F53D", url=f"https://t.me/{context.bot.username}?start={token}")]]
+                ),
                 thumbnail_url=item.get("thumb"),
             )
         )
     await inline_query.answer(articles)
-
-
-async def handle_chosen_inline(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    chosen = update.chosen_inline_result
-    if not chosen or chosen.from_user is None:
-        return
-    await enqueue_download(chosen.from_user.id, chosen.from_user.id, chosen.result_id)
-    await context.bot.send_message(chosen.from_user.id, "Download queued...")
 
 
 async def enqueue_download(user_id: int, chat_id: int, track_id: str) -> None:
@@ -274,7 +269,6 @@ def main() -> None:
 
     bot_app.add_handler(CommandHandler("start", start))
     bot_app.add_handler(CallbackQueryHandler(button_handler))
-    bot_app.add_handler(ChosenInlineResultHandler(handle_chosen_inline))
     bot_app.add_handler(InlineQueryHandler(handle_inline_query))
     bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_search))
 
