@@ -1,0 +1,12 @@
+python-telegram-bot>=21.0
+savify
+spotipy
+aiofiles
+aiohttp
+aiocache
+fastapi
+uvicorn[standard]
+ruff
+mypy
+pytest
+pytest-asyncio
