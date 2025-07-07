@@ -64,23 +64,185 @@ APPLICATION: Application[Any, Any, Any, Any, Any, Any] | None = None
 # language preferences
 LANG_FILE = Path("/app/langs.json")
 LANGUAGES: Dict[str, str] = {
-    "en": "English",
-    "es": "Español",
-    "de": "Deutsch",
-    "fr": "Français",
-    "it": "Italiano",
-    "pt": "Português",
-    "ru": "Русский",
-    "uk": "Українська",
-    "zh": "中文",
-    "ja": "日本語",
-    "ko": "한국어",
-    "ar": "العربية",
-    "tr": "Türkçe",
-    "hi": "हिंदी",
-    "bn": "বাংলা",
+    "en": "\U0001F1FA\U0001F1F8 English",
+    "es": "\U0001F1EA\U0001F1F8 Español",
+    "de": "\U0001F1E9\U0001F1EA Deutsch",
+    "fr": "\U0001F1EB\U0001F1F7 Français",
+    "it": "\U0001F1EE\U0001F1F9 Italiano",
+    "pt": "\U0001F1F5\U0001F1F9 Português",
+    "ru": "\U0001F1F7\U0001F1FA Русский",
+    "uk": "\U0001F1FA\U0001F1E6 Українська",
+    "zh": "\U0001F1E8\U0001F1F3 中文",
+    "ja": "\U0001F1EF\U0001F1F5 日本語",
+    "ko": "\U0001F1F0\U0001F1F7 한국어",
+    "ar": "\U0001F1F8\U0001F1E6 العربية",
+    "tr": "\U0001F1F9\U0001F1F7 Türkçe",
+    "hi": "\U0001F1EE\U0001F1F3 हिंदी",
+    "bn": "\U0001F1E7\U0001F1E9 বাংলা",
 }
 USER_LANGS: Dict[str, str] = {}
+
+# user-facing messages in multiple languages
+MESSAGES: Dict[str, Dict[str, str]] = {
+    "choose_language": {
+        "en": "Please choose your language:",
+        "es": "Por favor, selecciona tu idioma:",
+        "de": "Bitte wähle deine Sprache:",
+        "fr": "Veuillez choisir votre langue :",
+        "it": "Seleziona la tua lingua:",
+        "pt": "Por favor, escolha seu idioma:",
+        "ru": "Пожалуйста, выберите язык:",
+        "uk": "Будь ласка, оберіть мову:",
+        "zh": "请选择你的语言：",
+        "ja": "言語を選択してください:",
+        "ko": "언어를 선택하세요:",
+        "ar": "يرجى اختيار لغتك:",
+        "tr": "Lütfen dilinizi seçin:",
+        "hi": "कृपया अपनी भाषा चुनें:",
+        "bn": "আপনার ভাষা নির্বাচন করুন:",
+    },
+    "choose_track": {
+        "en": "Choose a track:",
+        "es": "Elige una pista:",
+        "de": "Wähle einen Titel:",
+        "fr": "Choisissez une piste :",
+        "it": "Scegli una traccia:",
+        "pt": "Escolha uma faixa:",
+        "ru": "Выберите трек:",
+        "uk": "Виберіть трек:",
+        "zh": "选择一个曲目：",
+        "ja": "トラックを選択してください:",
+        "ko": "트랙을 선택하세요:",
+        "ar": "اختر مسارًا:",
+        "tr": "Bir parça seçin:",
+        "hi": "एक ट्रैक चुनें:",
+        "bn": "একটি ট্র্যাক চয়ন করুন:",
+    },
+    "download_started": {
+        "en": "Download started, please wait....",
+        "es": "Descarga iniciada, espera por favor....",
+        "de": "Download gestartet, bitte warten...",
+        "fr": "Téléchargement lancé, veuillez patienter...",
+        "it": "Download avviato, attendere...",
+        "pt": "Download iniciado, aguarde...",
+        "ru": "Загрузка началась, пожалуйста, подождите...",
+        "uk": "Завантаження розпочато, зачекайте...",
+        "zh": "开始下载，请稍候...",
+        "ja": "ダウンロードを開始しました。しばらくお待ちください...",
+        "ko": "다운로드를 시작합니다. 잠시만 기다려주세요...",
+        "ar": "تم بدء التنزيل، يرجى الانتظار...",
+        "tr": "İndirme başlatıldı, lütfen bekleyin...",
+        "hi": "डाउनलोड शुरू हुआ, कृपया प्रतीक्षा करें...",
+        "bn": "ডাউনলোড শুরু হয়েছে, অনুগ্রহ করে অপেক্ষা করুন...",
+    },
+    "language_saved": {
+        "en": "Language saved! Send me a song name or Spotify link.",
+        "es": "¡Idioma guardado! Envíame un nombre de canción o enlace de Spotify.",
+        "de": "Sprache gespeichert! Sende mir einen Songnamen oder Spotify-Link.",
+        "fr": "Langue enregistrée ! Envoyez-moi un nom de chanson ou un lien Spotify.",
+        "it": "Lingua salvata! Inviami il nome di un brano o un link Spotify.",
+        "pt": "Idioma salvo! Envie um nome de música ou link do Spotify.",
+        "ru": "Язык сохранён! Отправьте название песни или ссылку Spotify.",
+        "uk": "Мову збережено! Надішліть назву пісні або посилання Spotify.",
+        "zh": "语言已保存！发送歌曲名称或 Spotify 链接。",
+        "ja": "言語を保存しました！曲名または Spotify リンクを送ってください。",
+        "ko": "언어가 저장되었습니다! 노래 제목 또는 Spotify 링크를 보내주세요.",
+        "ar": "تم حفظ اللغة! أرسل لي اسم أغنية أو رابط سبوتيفاي.",
+        "tr": "Dil kaydedildi! Bana bir şarkı adı veya Spotify bağlantısı gönder.",
+        "hi": "भाषा सहेजी गई! मुझे गीत का नाम या Spotify लिंक भेजें।",
+        "bn": "ভাষা সংরক্ষণ হয়েছে! আমাকে একটি গান নাম বা Spotify লিঙ্ক পাঠান।",
+    },
+    "send_song": {
+        "en": "Send me a song name or Spotify link.",
+        "es": "Envíame un nombre de canción o enlace de Spotify.",
+        "de": "Sende mir einen Songnamen oder Spotify-Link.",
+        "fr": "Envoyez-moi un nom de chanson ou un lien Spotify.",
+        "it": "Inviami il nome di un brano o un link Spotify.",
+        "pt": "Envie um nome de música ou link do Spotify.",
+        "ru": "Отправьте название песни или ссылку Spotify.",
+        "uk": "Надішліть назву пісні або посилання Spotify.",
+        "zh": "发送歌曲名称或 Spotify 链接。",
+        "ja": "曲名または Spotify リンクを送ってください。",
+        "ko": "노래 제목 또는 Spotify 링크를 보내주세요.",
+        "ar": "أرسل لي اسم أغنية أو رابط سبوتيفاي.",
+        "tr": "Bana bir şarkı adı veya Spotify bağlantısı gönder.",
+        "hi": "मुझे गीत का नाम या Spotify लिंक भेजें।",
+        "bn": "আমাকে একটি গান নাম বা Spotify লিঙ্ক পাঠান।",
+    },
+    "too_many_downloads": {
+        "en": "Too many downloads in progress, please try later.",
+        "es": "Demasiadas descargas en progreso, inténtalo más tarde.",
+        "de": "Zu viele Downloads laufen, bitte später versuchen.",
+        "fr": "Trop de téléchargements en cours, réessayez plus tard.",
+        "it": "Troppi download in corso, riprova più tardi.",
+        "pt": "Muitos downloads em andamento, tente mais tarde.",
+        "ru": "Слишком много загрузок, попробуйте позже.",
+        "uk": "Забагато завантажень, спробуйте пізніше.",
+        "zh": "下载过多，请稍后再试。",
+        "ja": "ダウンロードが多すぎます。後でお試しください。",
+        "ko": "다운로드가 너무 많습니다. 나중에 다시 시도하세요.",
+        "ar": "عمليات تنزيل كثيرة جدًا، حاول لاحقًا.",
+        "tr": "Çok fazla indirme işlemi var, lütfen daha sonra deneyin.",
+        "hi": "बहुत अधिक डाउनलोड प्रगति पर हैं, बाद में प्रयास करें।",
+        "bn": "অনেকগুলি ডাউনলোড চলছে, পরে চেষ্টা করুন।",
+    },
+    "download_failed": {
+        "en": "Download failed.",
+        "es": "La descarga falló.",
+        "de": "Download fehlgeschlagen.",
+        "fr": "Échec du téléchargement.",
+        "it": "Download fallito.",
+        "pt": "Falha no download.",
+        "ru": "Ошибка загрузки.",
+        "uk": "Помилка завантаження.",
+        "zh": "下载失败。",
+        "ja": "ダウンロードに失敗しました。",
+        "ko": "다운로드 실패.",
+        "ar": "فشل التنزيل.",
+        "tr": "İndirme başarısız oldu.",
+        "hi": "डाउनलोड विफल हुआ।",
+        "bn": "ডাউনলোড ব্যর্থ হয়েছে।",
+    },
+    "download_button": {
+        "en": "Download \U0001F53D",
+        "es": "Descargar \U0001F53D",
+        "de": "Herunterladen \U0001F53D",
+        "fr": "Télécharger \U0001F53D",
+        "it": "Scarica \U0001F53D",
+        "pt": "Baixar \U0001F53D",
+        "ru": "Скачать \U0001F53D",
+        "uk": "Завантажити \U0001F53D",
+        "zh": "下载 \U0001F53D",
+        "ja": "ダウンロード \U0001F53D",
+        "ko": "다운로드 \U0001F53D",
+        "ar": "تنزيل \U0001F53D",
+        "tr": "İndir \U0001F53D",
+        "hi": "डाउनलोड \U0001F53D",
+        "bn": "ডাউনলোড \U0001F53D",
+    },
+    "share": {
+        "en": "Share: {link}",
+        "es": "Compartir: {link}",
+        "de": "Teilen: {link}",
+        "fr": "Partager : {link}",
+        "it": "Condividi: {link}",
+        "pt": "Compartilhar: {link}",
+        "ru": "Поделиться: {link}",
+        "uk": "Поділитись: {link}",
+        "zh": "分享：{link}",
+        "ja": "共有: {link}",
+        "ko": "공유: {link}",
+        "ar": "مشاركة: {link}",
+        "tr": "Paylaş: {link}",
+        "hi": "साझा करें: {link}",
+        "bn": "শেয়ার করুন: {link}",
+    },
+}
+
+
+def tr(key: str, user_id: int) -> str:
+    lang = USER_LANGS.get(str(user_id), "en")
+    return MESSAGES.get(key, {}).get(lang, MESSAGES.get(key, {}).get("en", ""))
 
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=SPOTIFY_ID, client_secret=SPOTIFY_SECRET))
 
@@ -164,14 +326,16 @@ async def search_spotify(query: str) -> List[Dict[str, Any]]:
     return results
 
 
-async def send_language_selection(chat_id: int, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def send_language_selection(
+    chat_id: int, user_id: int, context: ContextTypes.DEFAULT_TYPE
+) -> None:
     keyboard = [
         [InlineKeyboardButton(name, callback_data=f"lang_{code}")]
         for code, name in LANGUAGES.items()
     ]
     await context.bot.send_message(
         chat_id,
-        "Please choose your language:",
+        tr("choose_language", user_id),
         reply_markup=InlineKeyboardMarkup(keyboard),
     )
 
@@ -195,7 +359,10 @@ async def send_search_results(message: Message, query: str) -> None:
         ]
         for item in results
     ]
-    await message.reply_text("Choose a track:", reply_markup=InlineKeyboardMarkup(keyboard))
+    await message.reply_text(
+        tr("choose_track", message.from_user.id),
+        reply_markup=InlineKeyboardMarkup(keyboard),
+    )
 
 
 async def handle_search(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -240,7 +407,7 @@ async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE
                 reply_markup=InlineKeyboardMarkup(
                     [[
                         InlineKeyboardButton(
-                            "Download \U0001F53D",
+                            tr("download_button", inline_query.from_user.id),
                             url=f"https://t.me/{context.bot.username}?start={token}",
                         )
                     ]]
@@ -255,7 +422,9 @@ async def enqueue_download(user_id: int, chat_id: int, track_id: str) -> None:
     if APPLICATION is None:
         return
     if queue.full():
-        await APPLICATION.bot.send_message(chat_id, "Too many downloads in progress, please try later.")
+        await APPLICATION.bot.send_message(
+            chat_id, tr("too_many_downloads", user_id)
+        )
         return
     await queue.put({"user_id": user_id, "chat_id": chat_id, "track_id": track_id})
 
@@ -265,8 +434,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     if not callback or not callback.data or not isinstance(callback.message, Message) or callback.from_user is None:
         return
     await callback.answer()
-    await enqueue_download(callback.from_user.id, callback.message.chat_id, callback.data)
-    await callback.message.reply_text("Download started, please wait....")
+    await enqueue_download(
+        callback.from_user.id, callback.message.chat_id, callback.data
+    )
+    await callback.message.reply_text(
+        tr("download_started", callback.from_user.id)
+    )
 
 
 async def language_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -280,10 +453,16 @@ async def language_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     args = context.user_data.pop("start_args", [])
     if args:
         track_id = decode_id(args[0])
-        await enqueue_download(callback.from_user.id, callback.message.chat_id, track_id)
-        await callback.message.reply_text("Download started, please wait....")
+        await enqueue_download(
+            callback.from_user.id, callback.message.chat_id, track_id
+        )
+        await callback.message.reply_text(
+            tr("download_started", callback.from_user.id)
+        )
     else:
-        await callback.message.reply_text("Language saved! Send me a song name or Spotify link.")
+        await callback.message.reply_text(
+            tr("language_saved", callback.from_user.id)
+        )
     try:
         await callback.message.edit_reply_markup(None)
     except Exception:
@@ -297,14 +476,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = str(message.from_user.id)
     if user_id not in USER_LANGS:
         context.user_data["start_args"] = context.args
-        await send_language_selection(message.chat_id, context)
+        await send_language_selection(message.chat_id, message.from_user.id, context)
         return
     if context.args:
         track_id = decode_id(context.args[0])
         await enqueue_download(message.from_user.id, message.chat_id, track_id)
-        await message.reply_text("Download started, please wait....")
+        await message.reply_text(tr("download_started", message.from_user.id))
     else:
-        await message.reply_text("Send me a song name or Spotify link.")
+        await message.reply_text(tr("send_song", message.from_user.id))
 
 
 async def worker() -> None:
@@ -323,7 +502,9 @@ async def worker() -> None:
                 file_path = await download_track(track_id)
             except Exception as exc:  # noqa: BLE001
                 logger.error("download failed", exc_info=exc)
-                await APPLICATION.bot.send_message(chat_id, "Download failed.")
+                await APPLICATION.bot.send_message(
+                    chat_id, tr("download_failed", job["user_id"])
+                )
                 queue.task_done()
                 continue
             await DOWNLOAD_CACHE.set(track_id, str(file_path))
@@ -333,7 +514,7 @@ async def worker() -> None:
             await APPLICATION.bot.send_audio(
                 chat_id,
                 audio=InputFile(f, filename=file_path.name),
-                caption=f"Share: {share_link}",
+                caption=tr("share", job["user_id"]).format(link=share_link),
             )
         try:
             file_path.unlink()
