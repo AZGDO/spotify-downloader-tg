@@ -1,0 +1,10 @@
+python-telegram-bot==21.5
+savify
+spotipy
+aiofiles
+aiohttp
+aiocache
+ruff
+mypy
+pytest
+pytest-asyncio
