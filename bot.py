@@ -195,10 +195,7 @@ async def worker() -> None:
             continue
         url = f"https://open.spotify.com/track/{track_id}"
         savify = Savify(
-            api_credentials=SpotifyClientCredentials(
-                client_id=SPOTIFY_ID,
-                client_secret=SPOTIFY_SECRET,
-            ),
+            api_credentials=(SPOTIFY_ID or "", SPOTIFY_SECRET or ""),
             quality=Quality.BEST,
             download_format=Format.MP3,
             group="%artist%/%album%",
