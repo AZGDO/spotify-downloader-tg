@@ -62,7 +62,7 @@ async def run_web() -> None:
     await server.serve()
 
 
-@app.get("/healthz")  # type: ignore[misc]
+@app.get("/healthz")
 async def healthz() -> Dict[str, str]:
     return {"status": "ok"}
 
@@ -221,10 +221,17 @@ async def worker() -> None:
 
 def main() -> None:
     global APPLICATION
+
+    async def post_init(app: Application[Any, Any, Any, Any, Any, Any]) -> None:
+        app.create_task(run_web())
+        for _ in range(QUEUE_MAX_SIZE):
+            app.create_task(worker())
+
     bot_app = (
         Application.builder()
         .token(BOT_TOKEN or "")
         .rate_limiter(AIORateLimiter())
+        .post_init(post_init)
         .build()
     )
     APPLICATION = bot_app
@@ -233,10 +240,6 @@ def main() -> None:
     bot_app.add_handler(CallbackQueryHandler(button_handler))
     bot_app.add_handler(InlineQueryHandler(handle_inline_query))
     bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_search))
-
-    bot_app.create_task(run_web())
-    for _ in range(QUEUE_MAX_SIZE):
-        bot_app.create_task(worker())
 
     bot_app.run_polling()
 
