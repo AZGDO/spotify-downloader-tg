@@ -70,7 +70,7 @@ async def run_web() -> None:
     await server.serve()
 
 
-@app.get("/healthz")
+@app.get("/healthz")  # type: ignore[misc]
 async def healthz() -> Dict[str, str]:
     return {"status": "ok"}
 
@@ -187,6 +187,7 @@ async def handle_chosen_inline(update: Update, context: ContextTypes.DEFAULT_TYP
     if not chosen or chosen.from_user is None:
         return
     await enqueue_download(chosen.from_user.id, chosen.from_user.id, chosen.result_id)
+    await context.bot.send_message(chosen.from_user.id, "Download queued...")
 
 
 async def enqueue_download(user_id: int, chat_id: int, track_id: str) -> None:
