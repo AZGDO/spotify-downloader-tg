@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import base64
+import json
 import logging
 import os
 import sys
@@ -60,6 +61,27 @@ queue: asyncio.LifoQueue[Dict[str, Any]] = asyncio.LifoQueue(maxsize=QUEUE_MAX_S
 
 APPLICATION: Application[Any, Any, Any, Any, Any, Any] | None = None
 
+# language preferences
+LANG_FILE = Path("/app/langs.json")
+LANGUAGES: Dict[str, str] = {
+    "en": "English",
+    "es": "Español",
+    "de": "Deutsch",
+    "fr": "Français",
+    "it": "Italiano",
+    "pt": "Português",
+    "ru": "Русский",
+    "uk": "Українська",
+    "zh": "中文",
+    "ja": "日本語",
+    "ko": "한국어",
+    "ar": "العربية",
+    "tr": "Türkçe",
+    "hi": "हिंदी",
+    "bn": "বাংলা",
+}
+USER_LANGS: Dict[str, str] = {}
+
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=SPOTIFY_ID, client_secret=SPOTIFY_SECRET))
 
 app = FastAPI()
@@ -82,6 +104,22 @@ def encode_id(sid: str) -> str:
 def decode_id(token: str) -> str:
     padding = "=" * (-len(token) % 4)
     return base64.urlsafe_b64decode(token + padding).decode()
+
+
+def load_user_langs() -> None:
+    if LANG_FILE.exists():
+        try:
+            with LANG_FILE.open() as f:
+                data = json.load(f)
+                if isinstance(data, dict):
+                    USER_LANGS.update({str(k): str(v) for k, v in data.items()})
+        except json.JSONDecodeError:
+            pass
+
+
+def save_user_langs() -> None:
+    with LANG_FILE.open("w") as f:
+        json.dump(USER_LANGS, f)
 
 
 async def compute_download_path(track_id: str) -> Path:
@@ -124,6 +162,18 @@ async def search_spotify(query: str) -> List[Dict[str, Any]]:
             }
         )
     return results
+
+
+async def send_language_selection(chat_id: int, context: ContextTypes.DEFAULT_TYPE) -> None:
+    keyboard = [
+        [InlineKeyboardButton(name, callback_data=f"lang_{code}")]
+        for code, name in LANGUAGES.items()
+    ]
+    await context.bot.send_message(
+        chat_id,
+        "Please choose your language:",
+        reply_markup=InlineKeyboardMarkup(keyboard),
+    )
 
 
 async def send_search_results(message: Message, query: str) -> None:
@@ -219,9 +269,35 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     await callback.message.reply_text("Download started, please wait....")
 
 
+async def language_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    callback = update.callback_query
+    if not callback or not callback.data or callback.from_user is None:
+        return
+    code = callback.data.replace("lang_", "")
+    USER_LANGS[str(callback.from_user.id)] = code
+    save_user_langs()
+    await callback.answer()
+    args = context.user_data.pop("start_args", [])
+    if args:
+        track_id = decode_id(args[0])
+        await enqueue_download(callback.from_user.id, callback.message.chat_id, track_id)
+        await callback.message.reply_text("Download started, please wait....")
+    else:
+        await callback.message.reply_text("Language saved! Send me a song name or Spotify link.")
+    try:
+        await callback.message.edit_reply_markup(None)
+    except Exception:
+        pass
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     message = update.effective_message
     if not isinstance(message, Message) or message.from_user is None:
+        return
+    user_id = str(message.from_user.id)
+    if user_id not in USER_LANGS:
+        context.user_data["start_args"] = context.args
+        await send_language_selection(message.chat_id, context)
         return
     if context.args:
         track_id = decode_id(context.args[0])
@@ -270,6 +346,8 @@ async def worker() -> None:
 def main() -> None:
     global APPLICATION
 
+    load_user_langs()
+
     async def post_init(app: Application[Any, Any, Any, Any, Any, Any]) -> None:
         app.create_task(run_web())
         for _ in range(QUEUE_MAX_SIZE):
@@ -285,6 +363,7 @@ def main() -> None:
     APPLICATION = bot_app
 
     bot_app.add_handler(CommandHandler("start", start))
+    bot_app.add_handler(CallbackQueryHandler(language_handler, pattern="^lang_"))
     bot_app.add_handler(CallbackQueryHandler(button_handler))
     bot_app.add_handler(InlineQueryHandler(handle_inline_query))
     bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_search))
