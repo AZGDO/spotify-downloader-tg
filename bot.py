@@ -239,6 +239,105 @@ MESSAGES: Dict[str, Dict[str, str]] = {
     },
     "menu": {
         "en": "Please choose an option:",
+        "es": "Por favor, elige una opción:",
+        "de": "Bitte wähle eine Option:",
+        "fr": "Veuillez choisir une option :",
+        "it": "Scegli un'opzione:",
+        "pt": "Por favor, escolha uma opção:",
+        "ru": "Пожалуйста, выберите опцию:",
+        "uk": "Будь ласка, оберіть опцію:",
+        "zh": "请选择一个选项：",
+        "ja": "オプションを選択してください:",
+        "ko": "옵션을 선택하세요:",
+        "ar": "يرجى اختيار خيار:",
+        "tr": "Lütfen bir seçenek seçin:",
+        "hi": "कृपया एक विकल्प चुनें:",
+        "bn": "একটি বিকল্প বেছে নিন:",
+    },
+    "menu_button": {
+        "en": "Menu",
+        "es": "Menú",
+        "de": "Menü",
+        "fr": "Menu",
+        "it": "Menu",
+        "pt": "Menu",
+        "ru": "Меню",
+        "uk": "Меню",
+        "zh": "菜单",
+        "ja": "メニュー",
+        "ko": "메뉴",
+        "ar": "القائمة",
+        "tr": "Menü",
+        "hi": "मेनू",
+        "bn": "মেনু",
+    },
+    "change_language": {
+        "en": "Change language",
+        "es": "Cambiar idioma",
+        "de": "Sprache ändern",
+        "fr": "Changer de langue",
+        "it": "Cambia lingua",
+        "pt": "Mudar idioma",
+        "ru": "Сменить язык",
+        "uk": "Змінити мову",
+        "zh": "更改语言",
+        "ja": "言語を変更",
+        "ko": "언어 변경",
+        "ar": "تغيير اللغة",
+        "tr": "Dili değiştir",
+        "hi": "भाषा बदलें",
+        "bn": "ভাষা পরিবর্তন করুন",
+    },
+    "donate": {
+        "en": "Donate",
+        "es": "Donar",
+        "de": "Spenden",
+        "fr": "Faire un don",
+        "it": "Dona",
+        "pt": "Doar",
+        "ru": "Поддержать",
+        "uk": "Підтримати",
+        "zh": "捐赠",
+        "ja": "寄付する",
+        "ko": "기부하기",
+        "ar": "تبرع",
+        "tr": "Bağış yap",
+        "hi": "दान करें",
+        "bn": "দান করুন",
+    },
+    "donation_info": {
+        "en": "💗 Thanks for supporting!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonaters:\n{donaters}\n\nNickname can be sent in comment for transfer.",
+        "es": "💗 ¡Gracias por apoyar!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonadores:\n{donaters}\n\nEl apodo puede enviarse en el comentario de la transferencia.",
+        "de": "💗 Vielen Dank für die Unterstützung!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nSpender:\n{donaters}\n\nNickname kann im Überweisungs-Kommentar angegeben werden.",
+        "fr": "💗 Merci pour votre soutien !\n\nСбер : 2202 2068 1567 7914\nPayPal : azgd0@outlook.com\n\nDonateurs :\n{donaters}\n\nLe pseudo peut être envoyé dans le commentaire du transfert.",
+        "it": "💗 Grazie per il supporto!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDonatori:\n{donaters}\n\nIl nickname può essere inviato nel commento al trasferimento.",
+        "pt": "💗 Obrigado pelo apoio!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nDoadores:\n{donaters}\n\nO apelido pode ser enviado no comentário da transferência.",
+        "ru": "💗 Спасибо за поддержку!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nСпонсоры:\n{donaters}\n\nНикнейм можно указать в комментарии к переводу.",
+        "uk": "💗 Дякуємо за підтримку!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nДонатори:\n{donaters}\n\nНікнейм можна надіслати в коментарі до переказу.",
+        "zh": "💗 感谢您的支持！\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n捐赠者：\n{donaters}\n\n昵称可以在转账备注中填写。",
+        "ja": "💗 ご支援ありがとうございます！\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n寄付者:\n{donaters}\n\nニックネームは振込のコメントで送れます。",
+        "ko": "💗 후원해 주셔서 감사합니다!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\n기부자:\n{donaters}\n\n닉네임은 송금 메모로 보낼 수 있습니다.",
+        "ar": "💗 شكرًا لدعمك!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nالمتبرعون:\n{donaters}\n\nيمكن إرسال الاسم المستعار في تعليق التحويل.",
+        "tr": "💗 Destek olduğunuz için teşekkürler!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nBağışçılar:\n{donaters}\n\nTakma ad transfer açıklamasında belirtilebilir.",
+        "hi": "💗 सहयोग के लिए धन्यवाद!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nदानदाता:\n{donaters}\n\nस्थानांतरण की टिप्पणी में उपनाम भेजा जा सकता है.",
+        "bn": "💗 সমর্থনের জন্য ধন্যবাদ!\n\nСбер: 2202 2068 1567 7914\nPayPal: azgd0@outlook.com\n\nদানকারীরা:\n{donaters}\n\nট্রান্সফারের মন্তব্যে নিকনেম পাঠানো যেতে পারে।",
+    },
+    "none": {
+        "en": "None",
+        "es": "Ninguno",
+        "de": "Keine",
+        "fr": "Aucun",
+        "it": "Nessuno",
+        "pt": "Nenhum",
+        "ru": "Нет",
+        "uk": "Немає",
+        "zh": "无",
+        "ja": "なし",
+        "ko": "없음",
+        "ar": "لا يوجد",
+        "tr": "Yok",
+        "hi": "कोई नहीं",
+        "bn": "কোনও নয়",
     },
 }
 
@@ -329,6 +428,23 @@ async def search_spotify(query: str) -> List[Dict[str, Any]]:
     return results
 
 
+async def send_clean_message(
+    chat_id: int,
+    context: ContextTypes.DEFAULT_TYPE,
+    text: str,
+    **kwargs: Any,
+) -> Message:
+    last_id = context.chat_data.get("last_bot_message")
+    if last_id:
+        try:
+            await context.bot.delete_message(chat_id, last_id)
+        except Exception:
+            pass
+    msg = await context.bot.send_message(chat_id, text, **kwargs)
+    context.chat_data["last_bot_message"] = msg.message_id
+    return msg
+
+
 async def send_language_selection(
     chat_id: int, user_id: int, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
@@ -336,24 +452,28 @@ async def send_language_selection(
         [InlineKeyboardButton(name, callback_data=f"lang_{code}")]
         for code, name in LANGUAGES.items()
     ]
-    await context.bot.send_message(
+    await send_clean_message(
         chat_id,
+        context,
         tr("choose_language", user_id),
         reply_markup=InlineKeyboardMarkup(keyboard),
     )
 
 
-def menu_button_markup() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup([[InlineKeyboardButton("Menu", callback_data="menu")]])
+def menu_button_markup(user_id: int) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        [[InlineKeyboardButton(tr("menu_button", user_id), callback_data="menu")]]
+    )
 
 
 async def send_menu(chat_id: int, user_id: int, context: ContextTypes.DEFAULT_TYPE) -> None:
     keyboard = [
-        [InlineKeyboardButton("Change language", callback_data="show_lang")],
-        [InlineKeyboardButton("Donate", callback_data="donate")],
+        [InlineKeyboardButton(tr("change_language", user_id), callback_data="show_lang")],
+        [InlineKeyboardButton(tr("donate", user_id), callback_data="donate")],
     ]
-    await context.bot.send_message(
+    await send_clean_message(
         chat_id,
+        context,
         tr("menu", user_id),
         reply_markup=InlineKeyboardMarkup(keyboard),
     )
@@ -382,13 +502,17 @@ async def donate_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     if chat_id is None:
         return
     donaters = get_donaters()
-    text = (
-        "Thanks for supporting!\n\n"
-        "Сбер: 2202 2068 1567 7914\n\n"
-        "Donaters:\n" + ("\n".join(donaters) if donaters else "None") +
-        "\n\nNickname can be sent in comment for transfer."
+    text = tr("donation_info", update.effective_user.id if update.effective_user else 0).format(
+        donaters="\n".join(donaters) if donaters else tr("none", update.effective_user.id if update.effective_user else 0)
     )
-    await context.bot.send_message(chat_id, text, reply_markup=menu_button_markup())
+    await send_clean_message(
+        chat_id,
+        context,
+        text,
+        reply_markup=menu_button_markup(
+            update.effective_user.id if update.effective_user else 0
+        ),
+    )
 
 
 async def menu_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -530,14 +654,18 @@ async def language_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         await enqueue_download(
             callback.from_user.id, callback.message.chat_id, track_id
         )
-        await callback.message.reply_text(
+        await send_clean_message(
+            callback.message.chat_id,
+            context,
             tr("download_started", callback.from_user.id),
-            reply_markup=menu_button_markup(),
+            reply_markup=menu_button_markup(callback.from_user.id),
         )
     else:
-        await callback.message.reply_text(
+        await send_clean_message(
+            callback.message.chat_id,
+            context,
             tr("language_saved", callback.from_user.id),
-            reply_markup=menu_button_markup(),
+            reply_markup=menu_button_markup(callback.from_user.id),
         )
     await send_menu(callback.message.chat_id, callback.from_user.id, context)
     try:
@@ -558,8 +686,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if context.args:
         track_id = decode_id(context.args[0])
         await enqueue_download(message.from_user.id, message.chat_id, track_id)
-        await message.reply_text(
-            tr("download_started", message.from_user.id), reply_markup=menu_button_markup()
+        await send_clean_message(
+            message.chat_id,
+            context,
+            tr("download_started", message.from_user.id),
+            reply_markup=menu_button_markup(message.from_user.id),
         )
     await send_menu(message.chat_id, message.from_user.id, context)
 
