@@ -35,7 +35,9 @@ import yt_dlp as youtube_dl
 sys.modules["youtube_dl"] = youtube_dl  # noqa: E402
 from savify import Savify  # noqa: E402
 from savify.types import Format, Quality  # noqa: E402
-from savify.utils import PathHolder  # noqa: E402
+from savify.utils import PathHolder, safe_path_string  # noqa: E402
+from savify.track import Track  # noqa: E402
+from savify.savify import _sort_dir  # noqa: E402
 import spotipy  # noqa: E402
 from spotipy.oauth2 import SpotifyClientCredentials  # noqa: E402
 
@@ -79,6 +81,14 @@ def encode_id(sid: str) -> str:
 def decode_id(token: str) -> str:
     padding = "=" * (-len(token) % 4)
     return base64.urlsafe_b64decode(token + padding).decode()
+
+
+async def compute_download_path(track_id: str) -> Path:
+    data: Dict[str, Any] = await asyncio.to_thread(sp.track, track_id)
+    track = Track(data)
+    group: str = _sort_dir(track, "%artist%/%album%")
+    file_name: str = safe_path_string(f"{str(track)}.mp3")
+    return DOWNLOAD_DIR / Path(group) / file_name
 
 
 async def search_spotify(query: str) -> List[Dict[str, Any]]:
@@ -213,7 +223,12 @@ async def worker() -> None:
             await APPLICATION.bot.send_message(chat_id, "Download failed.")
             queue.task_done()
             continue
-        file_path = next(DOWNLOAD_DIR.rglob(f"{track_id}*.mp3"))
+        file_path = await compute_download_path(track_id)
+        if not file_path.exists():
+            logger.error("file not found after download: %s", file_path)
+            await APPLICATION.bot.send_message(chat_id, "Download failed.")
+            queue.task_done()
+            continue
         await DOWNLOAD_CACHE.set(track_id, str(file_path))
         token = encode_id(track_id)
         share_link = f"https://t.me/{APPLICATION.bot.username}?start={token}"
