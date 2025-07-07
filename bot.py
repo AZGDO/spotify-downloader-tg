@@ -481,7 +481,8 @@ async def send_menu(chat_id: int, user_id: int, context: ContextTypes.DEFAULT_TY
     )
 
 
-DONATERS_FILE = Path("donaters.txt")
+# list of supporter nicknames is stored next to this script
+DONATERS_FILE = Path(__file__).with_name("donaters.txt")
 
 
 def get_donaters() -> List[str]:
