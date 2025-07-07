@@ -3,17 +3,14 @@
 # builder image
 FROM python:3.10-slim AS builder
 
-RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get install -y ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir --prefix=/install \
-    python-telegram-bot[rate-limiter] \
-    aiohttp \
-    aiocache \
-    aiofiles \
-    spotipy \
-    savify
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 COPY bot.py .
 

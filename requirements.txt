@@ -1,5 +1,6 @@
 python-telegram-bot[rate-limiter]==21.5
 savify
+aiolimiter
 spotipy
 aiofiles
 aiohttp
