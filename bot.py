@@ -91,6 +91,24 @@ async def compute_download_path(track_id: str) -> Path:
     return DOWNLOAD_DIR / Path(group) / file_name
 
 
+async def download_track(track_id: str) -> Path:
+    """Download a single track and return the resulting file path."""
+    url = f"https://open.spotify.com/track/{track_id}"
+    savify = Savify(
+        api_credentials=(SPOTIFY_ID or "", SPOTIFY_SECRET or ""),
+        quality=Quality.BEST,
+        download_format=Format.MP3,
+        group="%artist%/%album%",
+        path_holder=PathHolder(downloads_path=str(DOWNLOAD_DIR)),
+        logger=logger,
+    )
+    await asyncio.to_thread(savify.download, url)
+    file_path = await compute_download_path(track_id)
+    if not file_path.exists():
+        raise FileNotFoundError(str(file_path))
+    return file_path
+
+
 async def search_spotify(query: str) -> List[Dict[str, Any]]:
     results: List[Dict[str, Any]] = []
     data = sp.search(q=query, type="track", limit=10)
@@ -203,40 +221,30 @@ async def worker() -> None:
             queue.task_done()
             continue
         cached = await DOWNLOAD_CACHE.get(track_id)
-        if cached:
-            await APPLICATION.bot.send_audio(chat_id, audio=InputFile(str(cached)))
-            queue.task_done()
-            continue
-        url = f"https://open.spotify.com/track/{track_id}"
-        savify = Savify(
-            api_credentials=(SPOTIFY_ID or "", SPOTIFY_SECRET or ""),
-            quality=Quality.BEST,
-            download_format=Format.MP3,
-            group="%artist%/%album%",
-            path_holder=PathHolder(downloads_path=str(DOWNLOAD_DIR)),
-            logger=logger,
-        )
-        try:
-            await asyncio.to_thread(savify.download, url)
-        except Exception as exc:  # noqa: BLE001
-            logger.error("download failed", exc_info=exc)
-            await APPLICATION.bot.send_message(chat_id, "Download failed.")
-            queue.task_done()
-            continue
-        file_path = await compute_download_path(track_id)
-        if not file_path.exists():
-            logger.error("file not found after download: %s", file_path)
-            await APPLICATION.bot.send_message(chat_id, "Download failed.")
-            queue.task_done()
-            continue
-        await DOWNLOAD_CACHE.set(track_id, str(file_path))
+        if cached and Path(cached).exists():
+            file_path = Path(cached)
+        else:
+            try:
+                file_path = await download_track(track_id)
+            except Exception as exc:  # noqa: BLE001
+                logger.error("download failed", exc_info=exc)
+                await APPLICATION.bot.send_message(chat_id, "Download failed.")
+                queue.task_done()
+                continue
+            await DOWNLOAD_CACHE.set(track_id, str(file_path))
         token = encode_id(track_id)
         share_link = f"https://t.me/{APPLICATION.bot.username}?start={token}"
-        await APPLICATION.bot.send_audio(
-            chat_id,
-            audio=InputFile(str(file_path)),
-            caption=f"Share: {share_link}",
-        )
+        with file_path.open("rb") as f:
+            await APPLICATION.bot.send_audio(
+                chat_id,
+                audio=InputFile(f, filename=file_path.name),
+                caption=f"Share: {share_link}",
+            )
+        try:
+            file_path.unlink()
+        except FileNotFoundError:
+            pass
+        await DOWNLOAD_CACHE.delete(track_id)
         queue.task_done()
 
 
