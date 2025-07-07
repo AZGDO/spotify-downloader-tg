@@ -198,6 +198,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         return
     await callback.answer()
     await enqueue_download(callback.from_user.id, callback.message.chat_id, callback.data)
+    await callback.message.reply_text("Download started, please wait....")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -207,7 +208,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if context.args:
         track_id = decode_id(context.args[0])
         await enqueue_download(message.from_user.id, message.chat_id, track_id)
-        await message.reply_text("Download queued...")
+        await message.reply_text("Download started, please wait....")
     else:
         await message.reply_text("Send me a song name or Spotify link.")
 
