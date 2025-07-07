@@ -5,7 +5,6 @@ import base64
 import logging
 import os
 from pathlib import Path
-import contextlib
 from typing import Any, Dict, List
 
 from aiocache import Cache
@@ -63,7 +62,7 @@ async def run_web() -> None:
     await server.serve()
 
 
-@app.get("/healthz")
+@app.get("/healthz")  # type: ignore[misc]
 async def healthz() -> Dict[str, str]:
     return {"status": "ok"}
 
@@ -220,7 +219,7 @@ async def worker() -> None:
         queue.task_done()
 
 
-async def main() -> None:
+def main() -> None:
     global APPLICATION
     bot_app = (
         Application.builder()
@@ -235,15 +234,12 @@ async def main() -> None:
     bot_app.add_handler(InlineQueryHandler(handle_inline_query))
     bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_search))
 
+    bot_app.create_task(run_web())
     for _ in range(QUEUE_MAX_SIZE):
         bot_app.create_task(worker())
 
-    web_task = asyncio.create_task(run_web())
-    await asyncio.to_thread(bot_app.run_polling, close_loop=False)
-    web_task.cancel()
-    with contextlib.suppress(asyncio.CancelledError):
-        await web_task
+    bot_app.run_polling()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
