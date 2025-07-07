@@ -4,6 +4,7 @@ import asyncio
 import base64
 import logging
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -29,11 +30,14 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from savify import Savify
-from savify.types import Format, Quality
-from savify.utils import PathHolder
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+import yt_dlp as youtube_dl
+
+sys.modules["youtube_dl"] = youtube_dl  # noqa: E402
+from savify import Savify  # noqa: E402
+from savify.types import Format, Quality  # noqa: E402
+from savify.utils import PathHolder  # noqa: E402
+import spotipy  # noqa: E402
+from spotipy.oauth2 import SpotifyClientCredentials  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
