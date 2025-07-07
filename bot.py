@@ -237,6 +237,9 @@ MESSAGES: Dict[str, Dict[str, str]] = {
         "hi": "साझा करें: {link}",
         "bn": "শেয়ার করুন: {link}",
     },
+    "menu": {
+        "en": "Please choose an option:",
+    },
 }
 
 
@@ -338,6 +341,77 @@ async def send_language_selection(
         tr("choose_language", user_id),
         reply_markup=InlineKeyboardMarkup(keyboard),
     )
+
+
+def menu_button_markup() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([[InlineKeyboardButton("Menu", callback_data="menu")]])
+
+
+async def send_menu(chat_id: int, user_id: int, context: ContextTypes.DEFAULT_TYPE) -> None:
+    keyboard = [
+        [InlineKeyboardButton("Change language", callback_data="show_lang")],
+        [InlineKeyboardButton("Donate", callback_data="donate")],
+    ]
+    await context.bot.send_message(
+        chat_id,
+        tr("menu", user_id),
+        reply_markup=InlineKeyboardMarkup(keyboard),
+    )
+
+
+DONATERS_FILE = Path("donaters.txt")
+
+
+def get_donaters() -> List[str]:
+    if DONATERS_FILE.exists():
+        with DONATERS_FILE.open() as f:
+            return [line.strip() for line in f if line.strip()]
+    return []
+
+
+async def donate_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    if query:
+        await query.answer()
+        chat_id = query.message.chat_id if query.message else None
+    else:
+        message = update.effective_message
+        if not isinstance(message, Message):
+            return
+        chat_id = message.chat_id
+    if chat_id is None:
+        return
+    donaters = get_donaters()
+    text = (
+        "Thanks for supporting!\n\n"
+        "Сбер: 2202 2068 1567 7914\n\n"
+        "Donaters:\n" + ("\n".join(donaters) if donaters else "None") +
+        "\n\nNickname can be sent in comment for transfer."
+    )
+    await context.bot.send_message(chat_id, text, reply_markup=menu_button_markup())
+
+
+async def menu_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    message = update.effective_message
+    if not isinstance(message, Message) or message.from_user is None:
+        return
+    await send_menu(message.chat_id, message.from_user.id, context)
+
+
+async def menu_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    if not query or query.from_user is None:
+        return
+    await query.answer()
+    await send_menu(query.message.chat_id, query.from_user.id, context)
+
+
+async def show_language(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    if not query or query.from_user is None:
+        return
+    await query.answer()
+    await send_language_selection(query.message.chat_id, query.from_user.id, context)
 
 
 async def send_search_results(message: Message, query: str) -> None:
@@ -457,12 +531,15 @@ async def language_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -
             callback.from_user.id, callback.message.chat_id, track_id
         )
         await callback.message.reply_text(
-            tr("download_started", callback.from_user.id)
+            tr("download_started", callback.from_user.id),
+            reply_markup=menu_button_markup(),
         )
     else:
         await callback.message.reply_text(
-            tr("language_saved", callback.from_user.id)
+            tr("language_saved", callback.from_user.id),
+            reply_markup=menu_button_markup(),
         )
+    await send_menu(callback.message.chat_id, callback.from_user.id, context)
     try:
         await callback.message.edit_reply_markup(None)
     except Exception:
@@ -481,9 +558,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if context.args:
         track_id = decode_id(context.args[0])
         await enqueue_download(message.from_user.id, message.chat_id, track_id)
-        await message.reply_text(tr("download_started", message.from_user.id))
-    else:
-        await message.reply_text(tr("send_song", message.from_user.id))
+        await message.reply_text(
+            tr("download_started", message.from_user.id), reply_markup=menu_button_markup()
+        )
+    await send_menu(message.chat_id, message.from_user.id, context)
 
 
 async def worker() -> None:
@@ -544,7 +622,11 @@ def main() -> None:
     APPLICATION = bot_app
 
     bot_app.add_handler(CommandHandler("start", start))
+    bot_app.add_handler(CommandHandler("menu", menu_command))
     bot_app.add_handler(CallbackQueryHandler(language_handler, pattern="^lang_"))
+    bot_app.add_handler(CallbackQueryHandler(show_language, pattern="^show_lang$"))
+    bot_app.add_handler(CallbackQueryHandler(donate_handler, pattern="^donate$"))
+    bot_app.add_handler(CallbackQueryHandler(menu_callback, pattern="^menu$"))
     bot_app.add_handler(CallbackQueryHandler(button_handler))
     bot_app.add_handler(InlineQueryHandler(handle_inline_query))
     bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_search))
