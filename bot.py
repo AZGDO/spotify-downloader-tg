@@ -15,6 +15,7 @@ from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     InlineQueryResultArticle,
+    InputTextMessageContent,
     InputFile,
     Message,
     Update,
@@ -50,7 +51,7 @@ DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
 QUEUE_MAX_SIZE = 3
 queue: asyncio.LifoQueue[Dict[str, Any]] = asyncio.LifoQueue(maxsize=QUEUE_MAX_SIZE)
 
-APPLICATION: Application
+APPLICATION: Application[Any, Any, Any, Any, Any, Any] | None = None
 
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=SPOTIFY_ID, client_secret=SPOTIFY_SECRET))
 
@@ -62,7 +63,7 @@ async def run_web() -> None:
     await server.serve()
 
 
-@app.get("/healthz")  # type: ignore[misc]
+@app.get("/healthz")
 async def healthz() -> Dict[str, str]:
     return {"status": "ok"}
 
@@ -92,6 +93,8 @@ async def search_spotify(query: str) -> List[Dict[str, Any]]:
 
 
 async def send_search_results(message: Message, query: str) -> None:
+    if message.from_user is None:
+        return
     cached = await SEARCH_CACHE.get(f"{message.from_user.id}:{query}")
     if cached:
         results = cached
@@ -112,20 +115,24 @@ async def send_search_results(message: Message, query: str) -> None:
 
 
 async def handle_search(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    query = update.message.text
-    await send_search_results(update.message, query)
+    message = update.effective_message
+    if not isinstance(message, Message) or not message.text:
+        return
+    query = message.text
+    await send_search_results(message, query)
 
 
 async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    query = update.inline_query.query
-    if not query:
+    inline_query = update.inline_query
+    if not inline_query or not inline_query.query or inline_query.from_user is None:
         return
-    cached = await SEARCH_CACHE.get(f"{update.inline_query.from_user.id}:{query}")
+    query = inline_query.query
+    cached = await SEARCH_CACHE.get(f"{inline_query.from_user.id}:{query}")
     if cached:
         results = cached
     else:
         results = await search_spotify(query)
-        await SEARCH_CACHE.set(f"{update.inline_query.from_user.id}:{query}", results)
+        await SEARCH_CACHE.set(f"{inline_query.from_user.id}:{query}", results)
 
     articles = []
     for item in results:
@@ -134,17 +141,19 @@ async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE
             InlineQueryResultArticle(
                 id=item["id"],
                 title=f"{item['title']} – {item['artists']}",
-                input_message_content=None,
+                input_message_content=InputTextMessageContent("Downloading..."),
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Download \U0001F53D", url=f"https://t.me/{context.bot.username}?start={token}")]]
                 ),
                 description="Send to download",
             )
         )
-    await update.inline_query.answer(articles)
+    await inline_query.answer(articles)
 
 
 async def enqueue_download(user_id: int, chat_id: int, track_id: str) -> None:
+    if APPLICATION is None:
+        return
     if queue.full():
         await APPLICATION.bot.send_message(chat_id, "Too many downloads in progress, please try later.")
         return
@@ -152,18 +161,23 @@ async def enqueue_download(user_id: int, chat_id: int, track_id: str) -> None:
 
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    query = update.callback_query
-    await query.answer()
-    await enqueue_download(query.from_user.id, query.message.chat_id, query.data)
+    callback = update.callback_query
+    if not callback or not callback.data or not isinstance(callback.message, Message) or callback.from_user is None:
+        return
+    await callback.answer()
+    await enqueue_download(callback.from_user.id, callback.message.chat_id, callback.data)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    message = update.effective_message
+    if not isinstance(message, Message) or message.from_user is None:
+        return
     if context.args:
         track_id = decode_id(context.args[0])
-        await enqueue_download(update.message.from_user.id, update.message.chat_id, track_id)
-        await update.message.reply_text("Download queued...")
+        await enqueue_download(message.from_user.id, message.chat_id, track_id)
+        await message.reply_text("Download queued...")
     else:
-        await update.message.reply_text("Send me a song name or Spotify link.")
+        await message.reply_text("Send me a song name or Spotify link.")
 
 
 async def worker() -> None:
@@ -171,9 +185,12 @@ async def worker() -> None:
         job = await queue.get()
         track_id = job["track_id"]
         chat_id = job["chat_id"]
+        if APPLICATION is None:
+            queue.task_done()
+            continue
         cached = await DOWNLOAD_CACHE.get(track_id)
         if cached:
-            await APPLICATION.bot.send_audio(chat_id, audio=InputFile(cached))
+            await APPLICATION.bot.send_audio(chat_id, audio=InputFile(str(cached)))
             queue.task_done()
             continue
         url = f"https://open.spotify.com/track/{track_id}"
@@ -197,7 +214,7 @@ async def worker() -> None:
         share_link = f"https://t.me/{APPLICATION.bot.username}?start={token}"
         await APPLICATION.bot.send_audio(
             chat_id,
-            audio=InputFile(file_path),
+            audio=InputFile(str(file_path)),
             caption=f"Share: {share_link}",
         )
         queue.task_done()
@@ -205,7 +222,12 @@ async def worker() -> None:
 
 async def main() -> None:
     global APPLICATION
-    bot_app = Application.builder().token(BOT_TOKEN).rate_limiter(AIORateLimiter()).build()
+    bot_app = (
+        Application.builder()
+        .token(BOT_TOKEN or "")
+        .rate_limiter(AIORateLimiter())
+        .build()
+    )
     APPLICATION = bot_app
 
     bot_app.add_handler(CommandHandler("start", start))
@@ -216,11 +238,8 @@ async def main() -> None:
     for _ in range(QUEUE_MAX_SIZE):
         bot_app.create_task(worker())
 
-    await bot_app.initialize()
-    await bot_app.start()
     web_task = asyncio.create_task(run_web())
-    await bot_app.updater.start_polling()
-    await bot_app.updater.idle()
+    await asyncio.to_thread(bot_app.run_polling, close_loop=False)
     web_task.cancel()
     with contextlib.suppress(asyncio.CancelledError):
         await web_task

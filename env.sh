@@ -1,4 +1,4 @@
-export BOT_TOKEN=7960705872:AAE52ca1zbKizNRE6dCNdUPe_yMp89Nhxwg
-export SPOTIFY_CLIENT_ID=4d2f985998b1462b97c400b889e1919c
-export SPOTIFY_CLIENT_SECRET=36a1ccd92f3e48f18e88baa0b8e5fab7
+export BOT_TOKEN="your-telegram-bot-token"
+export SPOTIFY_CLIENT_ID="your-spotify-client-id"
+export SPOTIFY_CLIENT_SECRET="your-spotify-client-secret"
 
